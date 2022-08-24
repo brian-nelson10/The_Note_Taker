@@ -1,14 +1,23 @@
 {
-    "notes": [
+  "notes": [
     {
-        "id":"0",
-        "title":"Test Title",
-        "text":"Test text"
+      "id": "0",
+      "title": "Test Title",
+      "text": "Test text"
     },
     {
-        "id":"1",
-        "title":"Test",
-        "text":"Test text"
+      "id": "1",
+      "title": "Test",
+      "text": "Test text"
+    },
+    {
+      "name": "Larry",
+      "species": "lemur",
+      "diet": "omnivore",
+      "personalityTraits": [
+        "hungry"
+      ],
+      "id": "2"
     }
- ]
+  ]
 }
