@@ -1,11 +1,10 @@
 const express = require('express');
 const path = require('path')
 const fs = require('fs');
-//const apiRoutes = require('./routes/apiRoutes');
-// const htmlRoutes = require('./routes/htmlRoutes/index1');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+
 
 const theNote = require('./db/db.json');
 
@@ -15,9 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
-// Use apiRoutes
-//app.use('/api', apiRoutes);
-// app.use('/', htmlRoutes);
 
 app.get('/api/notes', (req, res) => {
   res.json(theNote.slice(1));
@@ -77,6 +73,24 @@ app.get("/notes/:id", (req, res) => {
   }
 });
 
+function deleteNote(id, notesArray) {
+  for (let i = 0 ; i < notesArray.length; i ++) {
+    let note = notesArray[i];
+
+    if (note.id == id) {
+      notesArray.splice(i, 1);
+      fs.writeFileSync(
+        path.join(__dirname, '.db/db.json'),
+        JSON.stringify(notesArray, null, 2)
+      );
+    }
+  }
+}
+
+app.delete('/api/notes/:id', (req, res) => {
+  deleteNote(req.params.id, theNote);
+  res.json(true);
+});
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
