@@ -1,11 +1,12 @@
 const express = require('express');
+const app = express();
 const path = require('path')
 const fs = require('fs');
 
 const PORT = process.env.PORT || 3001;
-const app = express();
 
 
+//json file
 const theNote = require('./db/db.json');
 
 //parse incoming array or string data
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
-
+// html routes
 app.get('/api/notes', (req, res) => {
   res.json(theNote.slice(1));
 })
@@ -30,6 +31,7 @@ app.get('/notes', (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
 });
+
 
 function createNewNote(body, notesArray) {
   const newNote = body;
@@ -50,8 +52,9 @@ function createNewNote(body, notesArray) {
       
       return newNote;
 }
-
+// api route post
 app.post('/api/notes', (req, res) => {
+  // set id based on what the next index of the array will be
   req.body.id = theNote.length.toString();
 
       const newNote = createNewNote(req.body, theNote);
@@ -63,7 +66,7 @@ function findById(id, notesArray) {
   return result;
 }
 
-
+// api route get id 
 app.get("/notes/:id", (req, res) => {
   const result = findById(req.params.id, notes);
   if (result) {
@@ -87,6 +90,7 @@ function deleteNote(id, notesArray) {
   }
 }
 
+// api route delete note
 app.delete('/api/notes/:id', (req, res) => {
   deleteNote(req.params.id, theNote);
   res.json(true);
